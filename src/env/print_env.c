@@ -1,0 +1,20 @@
+#include "env.h"
+#include "libft.h"
+
+#include <stddef.h>
+#include <stdio.h>
+
+int	print_env(int sorted, int inc_empty)
+{
+	char	**tab;
+	size_t	i;
+
+	tab = ms_getenv_full(sorted, inc_empty, 0);
+	if (!tab)
+		return (1);
+	i = 0;
+	while (tab[i])
+		printf("%s\n", tab[i++]);
+	ft_split_free(tab);
+	return (0);
+}

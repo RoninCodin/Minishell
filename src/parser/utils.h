@@ -1,0 +1,31 @@
+#ifndef UTILS_H
+# define UTILS_H
+
+# include "parse_tree.h"
+# include "lexer.h"
+# include <stddef.h>
+
+typedef struct s_parse_context
+{
+	t_parse_node	*root;
+	t_parse_node	**current_cmd_node;
+}	t_parse_context;
+
+typedef t_parse_node	*(*t_node_getter)(t_lex_tok **, t_parse_context *);
+
+const char		*parser_strerror(t_lex_tok *tok);
+
+t_parse_node	*new_node(size_t n_children);
+t_parse_node	*get_input_node(t_lex_tok **lex_list, t_parse_context *context);
+t_parse_node	*get_heredoc_node(t_lex_tok **lex_list,
+					t_parse_context *context);
+t_parse_node	*get_output_node(t_lex_tok **lex_list,
+					t_parse_context *context);
+t_parse_node	*get_append_node(t_lex_tok **lex_list,
+					t_parse_context *context);
+t_parse_node	*get_pipe_node(t_lex_tok **lex_list, t_parse_context *context);
+t_parse_node	*get_op_node(t_lex_tok **lex_list, t_parse_context *context);
+t_parse_node	*get_id_node(t_lex_tok **lex_list, t_parse_context *context);
+t_parse_node	*get_cmd_node(t_lex_tok **lex_list, t_parse_context *context);
+
+#endif

@@ -1,0 +1,49 @@
+#include "lexer.h"
+#include "libft.h"
+
+static const char	*_get_err_str(t_lex_op op)
+{
+	static const char	*op_err_str[] = {
+		"error",
+	[MS_LEX_OP_APPEND] = "`>>'",
+	[MS_LEX_OP_OUTPUT] = "`>'",
+	[MS_LEX_OP_INPUT] = "`<'",
+	[MS_LEX_OP_HEREDOC] = "`<<'",
+	[MS_LEX_OP_PIPE] = "`|'",
+	};
+
+	if (op > sizeof(op_err_str) || op < 0)
+		return ("error");
+	return (op_err_str[op]);
+}
+
+#define ERROR_BASE	"syntax error near unexpected token "
+
+const char	*parser_strerror(t_lex_tok *tok)
+{
+	static char	full[100] = ERROR_BASE;
+	char		*tok_str;
+
+	tok_str = full + ft_strlen(ERROR_BASE);
+	if (!tok)
+		ft_strlcpy(tok_str, "`newline'", 50);
+	else if (tok->type == MS_LEX_TOK_OP)
+		ft_strlcpy(tok_str, _get_err_str(tok->op), 50);
+	else if (tok->type == MS_LEX_TOK_ID)
+	{
+		ft_strlcpy(tok_str, "`", 50);
+		if (ft_strlcat(tok_str, tok->id, 50) > 12)
+			ft_strlcat(tok_str, "...", 50);
+		ft_strlcat(tok_str, "'", 50);
+	}
+	else if (tok->type == MS_LEX_TOK_WS)
+		ft_strlcpy(tok_str, "`whitespace'", 50);
+	else if (tok->type == MS_LEX_TOK_VAR)
+	{
+		ft_strlcpy(tok_str, "`$", 50);
+		if (ft_strlcat(tok_str, tok->id, 50) > 13)
+			ft_strlcat(tok_str, "...", 50);
+		ft_strlcat(tok_str, "'", 50);
+	}
+	return (full);
+}

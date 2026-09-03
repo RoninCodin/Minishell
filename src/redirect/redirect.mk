@@ -1,0 +1,9 @@
+REDIR_SRCFILES = redirect.c redir_list.c hear_doc.c restore_stdio.c track_fds.c
+
+REDIR_OBJS = $(addprefix $(OBJDIR)/,$(REDIR_SRCFILES:.c=.o))
+
+OBJS += $(REDIR_OBJS)
+
+$(OBJDIR)/%.o: $(REDIR_DIR)/%.c | $(OBJDIR)
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
+
