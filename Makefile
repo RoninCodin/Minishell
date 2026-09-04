@@ -46,9 +46,8 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c $(LIBS) | $(OBJDIR)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
 
 $(LIBS): | $(LIBDIR)
-	@git submodule update --init --recursive
 	@make -C libft all
-	@cd $(LIBDIR); ln -sf ../libft/libft.a
+	@cp libft/libft.a $(LIBDIR)/libft.a
 
 $(LIBDIR):
 	@mkdir -p $(LIBDIR)
@@ -69,7 +68,9 @@ clean:
 	@rm -rfv $(OBJDIR)
 
 fclean: clean
+	@make -C libft fclean
 	@rm -rfv $(NAME)
+	@rm -rfv $(LIBDIR)
 
 asan: CC += -fsanitize=address
 asan: debug

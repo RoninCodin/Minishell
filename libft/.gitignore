@@ -1,0 +1,11 @@
+.vscode/
+.cache
+compile_commands.json
+
+main.c
+*.a
+obj/
+*.o
+*.out
+**/*test*
+.project.gf
